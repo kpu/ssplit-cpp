@@ -1,0 +1,24 @@
+name: Windows
+
+on:
+  push:
+    branches: [master, windows]
+  pull_request:
+    branches: [master, windows]
+
+jobs:
+  build:
+    runs-on: windows-latest
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Dependencies
+      run: vcpkg install pcre:x64-windows
+    - name: cmake
+      run: |
+        cmake -E make_directory build
+        cd build
+        cmake ..
+    - name: Compile
+      working-directory: build
+      run: cmake --build . -j2
